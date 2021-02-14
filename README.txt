@@ -1,3 +1,7 @@
+ОПИСАНИЕ 
+
+бэк - Java, Spring Boot (MVC, Data, Security), Hibernate; БД - PostgreSQL; фронт - HTML, Bootstrap.
+
 ИНСТРУКЦИИ
 
 1. Для запуска приложения создайте базу данных factory, используя СУБД PostgreSQL
