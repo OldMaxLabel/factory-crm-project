@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Оборудование</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<header th:insert="parts/header :: header"></header>
+
+<div class="text-center container mt-3">
+
+    <div sec:authorize="hasAuthority('MANAGER')">
+
+        <h5>Добавить поступление оборудования</h5>
+        <br>
+
+        <p th:text="${message}"/>
+
+        <form th:action="@{/machine}" method="post" enctype="multipart/form-data" th:object="${machine}">
+            <label for="processing" class="col-lg-2 col-form-label">Вид обработки: </label>
+            <select id="processing" name="process" th:field="*{processing}">
+                <option th:each="process : ${processing}" th:value="${process}" th:text="${process}"></option>
+            </select>
+            <label for="states" class="col-lg-2 col-form-label">Состояние: </label>
+            <select id="states" name="state" th:field="*{state}">
+                <option th:each="state : ${states}" th:value="${state}" th:text="${state}"></option>
+            </select>
+            <br>
+            <br>
+            <div class="form-group row">
+                <label for="title" class="col-sm-3 col-form-label">Введите наименование: </label>
+                <input id="title" type="text" name="title" class="col-sm-7"
+                       th:field="*{title}">
+            </div>
+            <div class="form-group row">
+                <label for="xAxis" class="col-sm-3 col-form-label">Введите расход по оси X: </label>
+                <input id="xAxis" type="text" name="xAxis" class="col-sm-7"
+                       th:field="*{xAxis}">
+            </div>
+            <div class="form-group row">
+                <label for="yAxis" class="col-sm-3 col-form-label">Введите расход по оси Y: </label>
+                <input id="yAxis" type="text" name="yAxis" class="col-sm-7"
+                       th:field="*{yAxis}">
+            </div>
+            <div class="form-group row">
+                <label for="zAxis" class="col-sm-3 col-form-label">Введите расход по оси Z: </label>
+                <input id="zAxis" type="text" name="zAxis" class="col-sm-7"
+                       th:field="*{zAxis}">
+            </div>
+            <div class="form-group row">
+                <label for="description" class="col-sm-3 col-form-label">Введите описание: </label>
+                <input id="description" type="text" name="description" class="col-sm-7"
+                       th:field="*{description}">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Добавить</button>
+            </div>
+        </form>
+
+    </div>
+
+    <br>
+
+    <h5>Оборудование в цехе</h5>
+    <br>
+    <form action="/machine" method="get">
+        <label for="filter_process" class="col-lg-2 col-form-label">Вид обработки: </label>
+        <select id="filter_process" name="filter_process">
+            <option></option>
+            <option th:each="process : ${processing}" th:value="${process}" th:text="${process}"></option>
+        </select>
+        <button type="submit" class="btn btn-primary ml-3">Отфильтровать</button>
+    </form>
+
+    <div th:if="${#lists.isEmpty(machines)}">
+        <br>
+        Список оборудования пуст
+    </div>
+
+    <table th:if="${not #lists.isEmpty(machines)}" class="table table-bordered mt-3">
+
+        <thead>
+        <tr>
+            <th scope="col">Наименование</th>
+            <th scope="col">Вид обработки</th>
+            <th scope="col">Расход по оси X</th>
+            <th scope="col">Расход по оси Y</th>
+            <th scope="col">Расход по оси Z</th>
+            <th scope="col">Состояние</th>
+            <th></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="mech : ${machines}">
+
+            <td th:text="${mech.title}"/>
+
+            <td th:text="${mech.processing}"/>
+
+            <td th:text="${mech.xAxis}"/>
+
+            <td th:text="${mech.yAxis}"/>
+
+            <td th:text="${mech.zAxis}"/>
+
+            <td th:text="${mech.state}"/>
+
+            <td><a th:href="'/machine/' + ${mech.id}" class="btn btn-warning">Подробнее</a></td>
+
+        </tr>
+        </tbody>
+
+    </table>
+
+    <br>
+
+</div>
+
+<div th:insert="parts/footer :: footer"></div>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Изменить профиль</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<header th:insert="parts/header :: header"></header>
+
+<div class="container">
+    <p class="mt-3"><h4>Изменить профиль</h4></p>
+    <br>
+
+    <form th:action="@{/user/profile/edit}" method="post">
+
+        <div>
+            <label for="password" class="col-lg-2 col-form-label">Пароль: </label>
+            <input id="password" name="password" class="col-lg-4" type="text" placeholder="Пароль">
+        </div>
+        <div>
+            <label for="email" class="col-lg-2 col-form-label">Почта: </label>
+            <input id="email" name="email" class="col-lg-4" type="email" th:value="${user.email}">
+        </div>
+        <div>
+            <label for="phone" class="col-lg-2 col-form-label">Телефон: </label>
+            <input id="phone" name="phone" class="col-lg-4" type="text" th:value="${user.phone}">
+        </div>
+        <br>
+
+        <input type="hidden" th:value="${user.id}" name="userId">
+        <button class="btn btn-primary mt-3" type="submit">Изменить</button>
+
+    </form>
+
+
+</div>
+
+<div th:insert="parts/footer :: footer"></div>
+
+</body>
+</html>

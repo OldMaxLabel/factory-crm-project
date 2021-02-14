@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Задачи</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<header th:insert="parts/header :: header"></header>
+
+<div class="container mt-5">
+
+    <form sec:authorize="hasAuthority('MANAGER')"  th:action="@{/task/add}" method="get">
+        <button class="btn btn-primary" type="submit"/>Добавить задание</button>
+    </form>
+    <br>
+
+    <div th:if="${#lists.isEmpty(tasks)}">
+        Список заданий пуст
+    </div>
+
+    <h2>Текущие задачи</h2>
+    <div th:each="task : ${tasks}" class="alert alert-info mt-2">
+        <h4 th:text="${task.title}"/>
+        <p>Дата запуска: <b th:text="${task.initialize_date}"/></p>
+        <p>Дата сдачи: <b th:text="${task.finalize_date}"/></p>
+        <p>Кол-во: <b th:text="${task.count}"/></p>
+        <a th:href="'/task/' + ${task.id}" class="btn btn-warning">Подробнее</a>
+    </div>
+</div>
+
+<div th:insert="parts/footer :: footer"></div>
+
+</body>
+</html>

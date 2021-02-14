@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Оборудование</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<header th:insert="parts/header :: header"></header>
+
+<div class="text-center container mt-3">
+
+    <h5>Оборудование</h5>
+    <br>
+    <table th:if="${not #lists.isEmpty(mech)}" class="table table-bordered mt-3">
+
+        <thead>
+        <tr>
+            <th scope="col">Наименование</th>
+            <th scope="col">Вид обработки</th>
+            <th scope="col">Расход по оси X</th>
+            <th scope="col">Расход по оси Y</th>
+            <th scope="col">Расход по оси Z</th>
+            <th scope="col">Состояние</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr>
+
+            <td th:text="${mech.title}"/>
+
+            <td th:text="${mech.processing}"/>
+
+            <td th:text="${mech.xAxis}"/>
+
+            <td th:text="${mech.yAxis}"/>
+
+            <td th:text="${mech.zAxis}"/>
+
+            <td th:text="${mech.state}"/>
+
+        </tr>
+        </tbody>
+
+    </table>
+
+    <br>
+
+    <b>Описание:</b>
+    <p th:text="${mech.description}"/>
+
+    <br>
+
+    <p sec:authorize="hasAuthority('MANAGER')"><a th:href="'/machine/' + ${mech.id} + '/edit'" class="btn btn-warning">Редактировать</a></p>
+
+    <br>
+
+</div>
+
+<div th:insert="parts/footer :: footer"></div>
+
+</body>
+</html>

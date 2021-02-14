@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Сотрудники</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<header th:insert="parts/header :: header"></header>
+
+<div class="text-center container mt-3">
+
+    <br>
+
+    <h5>Сотрудники</h5>
+
+    <table class="table table-bordered mt-3">
+
+        <thead>
+        <tr>
+            <th scope="col">Пользователь</th>
+            <th scope="col">Имя</th>
+            <th scope="col">Фамилия</th>
+            <th scope="col">Должность</th>
+            <th scope="col">Почта</th>
+            <th scope="col">Телефон</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="emp : ${employee}">
+
+            <td th:text="${emp.username}"/>
+
+            <td th:text="${emp.firstname}"/>
+
+            <td th:text="${emp.secondname}"/>
+
+            <td th:each="role : ${emp.getRoles}" th:text="${role}"/>
+
+            <td><a th:href="'mailto:' + ${emp.email}"><i th:text="${emp.email}" /></a></td>
+
+            <td><a th:href="'tel:' + ${emp.phone}"><i th:text="${emp.phone}" /></a></td>
+
+        </tr>
+        </tbody>
+
+    </table>
+
+    <br>
+
+</div>
+
+<div th:insert="parts/footer :: footer"></div>
+
+</body>
+</html>

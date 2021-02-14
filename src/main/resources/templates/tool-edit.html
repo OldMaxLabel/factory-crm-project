@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Инструмент</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<header th:insert="parts/header :: header"></header>
+
+<div class="text-center container mt-3">
+
+    <h5>Списать инструмента</h5>
+    <br>
+
+    <form th:action="'/tool/' + ${tool.id} + '/edit'" method="post" enctype="multipart/form-data" th:object="${tool}">
+        <div class="form-group row">
+            <label for="count" class="col-sm-3 col-form-label">Введите кол-во: </label>
+            <input id="count" type="text" name="count" class="col-sm-7">
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Списать</button>
+        </div>
+    </form>
+
+    <br>
+
+    <h5>Инструмент на складе</h5>
+    <br>
+
+    <table class="table table-bordered mt-3">
+
+        <thead>
+        <tr>
+            <th scope="col">Тип инструмента</th>
+            <th scope="col">Наименование</th>
+            <th scope="col">Диаметр</th>
+            <th scope="col">Длина</th>
+            <th scope="col">Длина режущей части</th>
+            <th scope="col">Кол-во</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:object="${tool}">
+
+            <td th:text="${tool.specialization}"/>
+
+            <td th:text="${tool.title}"/>
+
+            <td th:text="${tool.diameter}"/>
+
+            <td th:text="${tool.length}"/>
+
+            <td th:text="${tool.cuttingLength}"/>
+
+            <td th:text="${tool.count}"/>
+        </tr>
+        </tbody>
+
+    </table>
+
+    <br>
+
+</div>
+
+<div th:insert="parts/footer :: footer"></div>
+
+</body>
+</html>

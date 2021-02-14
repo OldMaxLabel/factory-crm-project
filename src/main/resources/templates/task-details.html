@@ -1,0 +1,266 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Детализация</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<header th:insert="parts/header :: header"></header>
+
+<div class="text-center container mt-3">
+
+    <div class="m-2">
+        <h3 th:text="${task.title}"/>
+
+        <table class="table table-bordered mt-3">
+
+            <thead>
+            <tr>
+                <th scope="col">Дата запуска</th>
+                <th scope="col">Дата сдачи</th>
+                <th scope="col">Количество</th>
+                <th scope="col" th:if="${not #lists.isEmpty(task.filename)}"></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr>
+
+                <td th:text="${task.initialize_date}"/>
+
+                <td th:text="${task.finalize_date}"/>
+
+                <td th:text="${task.count}"/>
+
+                <td th:if="${not #lists.isEmpty(task.filename)}">
+                    <a th:href="@{/images/{filename}(filename = ${task.filename})}" target="_blank">Чертеж</a>
+                </td>
+
+            </tr>
+            </tbody>
+
+        </table>
+
+        <br>
+
+        <p><b>Комментарии: </b></p>
+        <p th:if="${task.comments}" th:text="${task.comments}"/>
+    </div>
+
+    <br>
+
+    <a sec:authorize="hasAuthority('MANAGER')" th:href="'/task/' + ${task.id} + '/edit'" class="btn btn-warning">Редактировать</a>
+    <form sec:authorize="hasAuthority('MANAGER')" th:action="'/task/' + ${task.id} + '/remove'" method="post">
+        <button class="btn btn-warning mt-2" type="submit">Удалить</button>
+    </form>
+
+    <br>
+
+    <h5>Заготовка</h5>
+
+    <div sec:authorize="hasAuthority('ENGINEER')" class="mt-3" th:if="${#lists.isEmpty(task.stock)}">
+        <a th:href="'/task/' + ${task.id} + '/stock'" class="btn btn-primary">Добавить заготовку</a>
+    </div>
+
+
+    <div th:if="${not #lists.isEmpty(task.stock)}">
+
+        <table class="table table-bordered mt-3">
+
+            <thead>
+            <tr>
+                <th scope="col">Форма</th>
+                <th scope="col">Материал</th>
+                <th scope="col">Диаметр</th>
+                <th scope="col">Длина</th>
+                <th scope="col">Ширина</th>
+                <th scope="col">Высота</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr>
+
+                <td th:text="${(task.stock).form}"/>
+
+                <td th:text="${(task.stock).material}"/>
+
+                <td th:text="${(task.stock).diameter}"/>
+
+                <td th:text="${(task.stock).length}"/>
+
+                <td th:text="${(task.stock).width}"/>
+
+                <td th:text="${(task.stock).height}"/>
+
+            </tr>
+            </tbody>
+
+        </table>
+
+        <br>
+
+        <a sec:authorize="hasAuthority('ENGINEER')" th:href="'/task/' + ${id} + '/stock/' + ${(task.stock).id} + '/edit'"
+           class="btn btn-warning">Редактировать</a>
+        <form sec:authorize="hasAuthority('MANAGER')" th:action="@{'/task/' + ${id} + '/stock/' + ${(task.stock).id} + '/push'}" method="post">
+            <input class="btn btn-warning mt-3" type="submit" value="Списать материал">
+        </form>
+
+    </div>
+
+    <br>
+
+    <h5>Оборудование</h5>
+
+    <div class="mt-3">
+        <div sec:authorize="hasAuthority('ENGINEER')" th:if="${#lists.isEmpty(task.machines)}">
+            <a th:href="'/task/' + ${task.id} + '/machines'" class="btn btn-primary">Добавить оборудование</a>
+        </div>
+        <div th:if="${not #lists.isEmpty(task.machines)}">
+
+            <table class="table table-bordered mt-3">
+
+                <thead>
+                <tr>
+                    <th scope="col">Наименование</th>
+                    <th scope="col">Вид обработки</th>
+                    <th scope="col">Расход по оси X</th>
+                    <th scope="col">Расход по оси Y</th>
+                    <th scope="col">Расход по оси Z</th>
+                    <th scope="col">Состояние</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="mech : ${task.machines}">
+
+                    <td th:text="${mech.title}"/>
+
+                    <td th:text="${mech.processing}"/>
+
+                    <td th:text="${mech.xAxis}"/>
+
+                    <td th:text="${mech.yAxis}"/>
+
+                    <td th:text="${mech.zAxis}"/>
+
+                    <td th:text="${mech.state}"/>
+
+                </tr>
+                </tbody>
+
+            </table>
+
+            <br>
+
+            <a sec:authorize="hasAuthority('ENGINEER')" th:href="'/task/' + ${task.id} + '/machines'" class="btn btn-warning">Редактировать</a>
+
+        </div>
+
+    </div>
+
+    <br>
+
+    <h5>Инструмент</h5>
+
+    <div class="mt-3">
+        <div sec:authorize="hasAuthority('ENGINEER')" th:if="${#lists.isEmpty(task.tools)}">
+            <a th:href="'/task/' + ${task.id} + '/tools'" class="btn btn-primary">Добавить инструмент</a>
+        </div>
+        <div th:if="${not #lists.isEmpty(task.tools)}">
+
+            <table class="table table-bordered mt-3">
+
+                <thead>
+                <tr>
+                    <th scope="col">Тип инструмента</th>
+                    <th scope="col">Наименование</th>
+                    <th scope="col">Диаметр</th>
+                    <th scope="col">Длина</th>
+                    <th scope="col">Длина режущей части</th>
+                    <th scope="col">Кол-во на складе</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="tool : ${task.tools}">
+
+                    <td th:text="${tool.specialization}"/>
+
+                    <td th:text="${tool.title}"/>
+
+                    <td th:text="${tool.diameter}"/>
+
+                    <td th:text="${tool.length}"/>
+
+                    <td th:text="${tool.cuttingLength}"/>
+
+                    <td th:text="${tool.count}"/>
+
+                </tr>
+                </tbody>
+
+            </table>
+
+            <br>
+
+            <a sec:authorize="hasAuthority('ENGINEER')" th:href="'/task/' + ${task.id} + '/tools'" class="btn btn-warning">Редактировать</a>
+
+        </div>
+
+
+    </div>
+
+    <br>
+
+    <h5>Операционная карта</h5>
+
+    <div class="mt-3">
+        <div sec:authorize="hasAuthority('ENGINEER')" th:if="${(task.operations).empty}">
+            <a th:href="'/task/' + ${task.id} + '/operations'" class="btn btn-primary">Добавить операции</a>
+        </div>
+        <div th:if="not ${(task.operations).empty}">
+
+            <table class="table table-bordered mt-3">
+
+                <thead>
+                <tr>
+                    <th scope="col">Операция</th>
+                    <th scope="col">Машинное время</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="operation : ${(task.operations)}">
+
+                    <td th:text="${operation.title}"/>
+
+                    <td th:text="${operation.duration}"/>
+
+                </tr>
+                </tbody>
+
+            </table>
+
+            <br>
+
+            <a sec:authorize="hasAuthority('ENGINEER')" th:href="'/task/' + ${task.id} + '/operations'" class="btn btn-warning">Редактировать</a>
+            <form sec:authorize="hasAuthority('MANAGER')" th:action="@{'/task/' + ${task.id} + '/operations/cash'}" method="post">
+                <input class="btn btn-warning mt-3" type="submit" value="Рассчитать стоимость">
+            </form>
+
+        </div>
+    </div>
+
+    <br>
+    <br>
+
+</div>
+</div>
+
+<div th:insert="parts/footer :: footer"></div>
+
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Инструмент</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<header th:insert="parts/header :: header"></header>
+
+<div class="text-center container mt-3">
+
+    <div sec:authorize="hasAuthority('MANAGER')" >
+
+        <h5>Добавить поступление инструмента</h5>
+        <br>
+        <p th:if="${message}" th:utext="${message}"/>
+
+        <form th:action="@{/tool}" method="post" enctype="multipart/form-data" th:object="${tool}">
+            <label for="specialization" class="col-lg-2 col-form-label">Тип инструмента: </label>
+            <select id="specialization" name="specialization" th:field="*{specialization}">
+                <option th:each="spec : ${specializations}" th:value="${spec}" th:text="${spec}"></option>
+            </select>
+            <br>
+            <br>
+            <div class="form-group row">
+                <label for="title" class="col-sm-3 col-form-label">Введите наименование: </label>
+                <input id="title" type="text" name="title" class="col-sm-7" placeholder="Наименование"
+                       th:field="*{title}">
+            </div>
+            <div class="form-group row">
+                <label for="diameter" class="col-sm-3 col-form-label">Введите диаметр: </label>
+                <input id="diameter" type="text" name="diameter" class="col-sm-7"
+                       th:field="*{diameter}">
+            </div>
+            <div class="form-group row">
+                <label for="length" class="col-sm-3 col-form-label">Введите длину: </label>
+                <input id="length" type="text" name="length" class="col-sm-7"
+                       th:field="*{length}">
+            </div>
+            <div class="form-group row">
+                <label for="cuttingLength" class="col-sm-3 col-form-label">Введите длину режущей части: </label>
+                <input id="cuttingLength" type="text" name="cuttingLength" class="col-sm-7"
+                       th:field="*{cuttingLength}">
+            </div>
+            <div class="form-group row">
+                <label for="count" class="col-sm-3 col-form-label">Введите кол-во: </label>
+                <input id="count" type="text" name="count" class="col-sm-7"
+                       th:field="*{count}">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Добавить</button>
+            </div>
+        </form>
+
+    </div>
+
+    <br>
+
+    <h5>Инструмент на складе</h5>
+    <br>
+    <form action="/tool" method="get">
+        <label for="filter_specialization" class="col-lg-2 col-form-label">Тип инструмента: </label>
+        <select id="filter_specialization" name="filter_specialization">
+            <option></option>
+            <option th:each="spec : ${specializations}" th:value="${spec}" th:text="${spec}"></option>
+        </select>
+        <button type="submit" class="btn btn-primary ml-3">Отфильтровать</button>
+    </form>
+
+    <div th:if="${#lists.isEmpty(tools)}">
+        Список инструмента пуст
+    </div>
+
+    <table th:if="${not #lists.isEmpty(tools)}" class="table table-bordered mt-3">
+
+        <thead>
+        <tr>
+            <th scope="col">Тип инструмента</th>
+            <th scope="col">Наименование</th>
+            <th scope="col">Диаметр</th>
+            <th scope="col">Длина</th>
+            <th scope="col">Длина режущей части</th>
+            <th scope="col">Кол-во</th>
+            <th sec:authorize="hasAuthority('MANAGER')"></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="tool : ${tools}">
+
+            <td th:text="${tool.specialization}"/>
+
+            <td th:text="${tool.title}"/>
+
+            <td th:text="${tool.diameter}"/>
+
+            <td th:text="${tool.length}"/>
+
+            <td th:text="${tool.cuttingLength}"/>
+
+            <td th:text="${tool.count}"/>
+
+            <td sec:authorize="hasAuthority('MANAGER')"><a th:href="'/tool/' + ${tool.id} + '/edit'" class="btn btn-warning">Списать</a></td>
+
+        </tr>
+        </tbody>
+
+    </table>
+
+    <br>
+
+</div>
+
+<div th:insert="parts/footer :: footer"></div>
+
+</body>
+</html>

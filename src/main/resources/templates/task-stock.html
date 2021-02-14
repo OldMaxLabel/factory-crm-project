@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Заготовка</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<header th:insert="parts/header :: header"></header>
+
+<div class="text-center container mt-3">
+
+    <div th:if="${not #lists.isEmpty(stock)}">
+            <h5>Добавить заготовку</h5>
+
+        <br>
+        <form th:action="'/task/' + ${task.id} + '/stock'" method="post" th:object="${stock}">
+            <label for="form" class="col-lg-2 col-form-label">Форма: </label>
+            <select id="form" name="form">
+                <option th:each="form : ${forms}" th:value="${form}" th:text="${form}"></option>
+            </select>
+            <label for="material" class="col-lg-2 col-form-label">Материал: </label>
+            <select id="material" name="material">
+                <option th:each="material : ${materials}" th:value="${material}" th:text="${material}"></option>
+            </select>
+            <br>
+            <br>
+            <div class="form-group row">
+                <label for="diameter" class="col-sm-3 col-form-label">Введите диаметр материала: </label>
+                <input id="diameter" type="text" name="diameter"  placeholder="Введите диаметр" class="col-sm-7"
+                       th:field="*{diameter}">
+            </div>
+            <div class="form-group row">
+                <label for="length" class="col-sm-3 col-form-label">Введите длину материала: </label>
+                <input id="length" type="text" name="length"  placeholder="Введите длину" class="col-sm-7"
+                       th:field="*{length}">
+            </div>
+            <div class="form-group row">
+                <label for="height" class="col-sm-3 col-form-label">Введите высоту материала: </label>
+                <input id="height" type="text" name="height"  placeholder="Введите высоту" class="col-sm-7"
+                       th:field="*{height}">
+            </div>
+            <div class="form-group row">
+                <label for="width" class="col-sm-3 col-form-label">Введите ширину материала: </label>
+                <input id="width" type="text" name="width"  placeholder="Введите ширину" class="col-sm-7"
+                       th:field="*{width}">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Добавить заготовку</button>
+            </div>
+        </form>
+    </div>
+
+    <br>
+
+
+</div>
+
+<div th:insert="parts/footer :: footer"></div>
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Оборудование</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<header th:insert="parts/header :: header"></header>
+
+<div class="text-center container mt-3">
+
+    <h5>Редактировать оборудование</h5>
+    <br>
+    <form th:action="'/machine/' + ${machine.id} + '/edit'" method="post"  th:object="${machine}">
+        <label for="processing" class="col-lg-2 col-form-label">Вид обработки: </label>
+        <select id="processing" name="process" th:field="*{processing}">
+            <option th:value="${machine.processing}" th:text="${machine.processing}"></option>
+            <option th:each="process : ${processing}" th:value="${process}" th:text="${process}"></option>
+        </select>
+        <label for="states" class="col-lg-2 col-form-label">Состояние: </label>
+        <select id="states" name="state" th:field="*{state}">
+            <option th:value="${machine.state}" th:text="${machine.state}"></option>
+            <option th:each="state : ${states}" th:value="${state}" th:text="${state}"></option>
+        </select>
+        <br>
+        <br>
+        <div class="form-group row">
+            <label for="title" class="col-sm-3 col-form-label">Введите наименование: </label>
+            <input id="title" type="text" name="title" value="${machine.title}" class="col-sm-7"
+                   th:field="*{title}">
+        </div>
+        <div class="form-group row">
+            <label for="xAxis" class="col-sm-3 col-form-label">Введите расход по оси X: </label>
+            <input id="xAxis" type="text" name="xAxis" value="${machine.xAxis}" class="col-sm-7"
+                   th:field="*{xAxis}">
+        </div>
+        <div class="form-group row">
+            <label for="yAxis" class="col-sm-3 col-form-label">Введите расход по оси Y: </label>
+            <input id="yAxis" type="text" name="yAxis" value="${machine.yAxis}" class="col-sm-7"
+                   th:field="*{yAxis}">
+        </div>
+        <div class="form-group row">
+            <label for="zAxis" class="col-sm-3 col-form-label">Введите расход по оси Z: </label>
+            <input id="zAxis" type="text" name="zAxis" value="${machine.zAxis}" class="col-sm-7"
+                   th:field="*{zAxis}">
+        </div>
+        <div class="form-group row">
+            <label for="description" class="col-sm-3 col-form-label">Введите описание: </label>
+            <input id="description" type="text" name="description" value="${machine.description}" class="col-sm-7"
+                   th:field="*{description}">
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Обновить</button>
+        </div>
+    </form>
+    <br>
+
+</div>
+
+<div th:insert="parts/footer :: footer"></div>
+
+</body>
+</html>

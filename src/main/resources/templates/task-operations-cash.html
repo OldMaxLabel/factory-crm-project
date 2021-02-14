@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Детализация</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<header th:insert="parts/header :: header"></header>
+
+<div class="text-center container mt-3">
+
+    <div class="m-2">
+        <h3 th:text="${task.title}"/>
+
+        <table class="table table-bordered mt-3">
+
+            <thead>
+            <tr>
+                <th scope="col">Дата запуска</th>
+                <th scope="col">Дата сдачи</th>
+                <th scope="col">Количество (шт)</th>
+                <th scope="col">Машинное время (мин)</th>
+                <th scope="col">Стоимость (руб)</th>
+
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr>
+
+                <td th:text="${task.initialize_date}"/>
+
+                <td th:text="${task.finalize_date}"/>
+
+                <td th:text="${task.count}"/>
+
+                <td th:text="${duration}"/>
+
+                <td th:text="${cash}" />
+
+            </tr>
+            </tbody>
+
+        </table>
+
+        <br>
+
+        <p><b>Комментарии: </b></p>
+        <p th:if="${task.comments}" th:text="${task.comments}"/>
+    </div>
+
+    <br>
+    <a th:href="'/task/' + ${task.id}">Назад</a>
+
+    <br>
+    <br>
+
+</div>
+
+<div th:insert="parts/footer :: footer"></div>
+
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Инструмент</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<header th:insert="parts/header :: header"></header>
+
+<div class="text-center container mt-3">
+
+    <h5>Инструмент для <b th:text="${task.title}"/> </h5>
+
+    <br>
+
+    <table class="table table-bordered mt-3">
+
+        <thead>
+        <tr>
+            <th scope="col">Тип инструмента</th>
+            <th scope="col">Наименование</th>
+            <th scope="col">Диаметр</th>
+            <th scope="col">Длина</th>
+            <th scope="col">Длина режущей части</th>
+            <th scope="col">Кол-во на складе</th>
+            <th scope="col">Действие</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="tool : ${tools}">
+
+            <td th:text="${tool.specialization}"/>
+
+            <td th:text="${tool.title}"/>
+
+            <td th:text="${tool.diameter}"/>
+
+            <td th:text="${tool.length}"/>
+
+            <td th:text="${tool.cuttingLength}"/>
+
+            <td th:text="${tool.count}"/>
+
+            <td>
+                <form th:action="'/task/' + ${task.id} + '/tools/' + ${tool.id} + '/remove'" method="post">
+                    <button class="btn btn-warning mt-2" type="submit">Удалить</button>
+                </form>
+            </td>
+
+        </tr>
+        </tbody>
+
+    </table>
+
+    <br>
+
+    <a th:href="'/task/' + ${task.id} + '/tools/add'" class="btn btn-primary">Добавить</a>
+
+    <br>
+    <br>
+
+    <a th:href="'/task/' + ${task.id}">Назад</a>
+
+</div>
+
+<div th:insert="parts/footer :: footer"></div>
+
+</body>
+</html>

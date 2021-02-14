@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Материал</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<header th:insert="parts/header :: header"></header>
+
+<div class="text-center container mt-3">
+
+    <div sec:authorize="hasAuthority('MANAGER')">
+
+        <h5>Добавить поступление материала</h5>
+        <br>
+        <form th:action="@{/stuff}" method="post" th:object="${stuff}">
+            <label for="form" class="col-lg-2 col-form-label">Форма: </label>
+            <select id="form" name="form">
+                <option th:each="form : ${forms}" th:value="${form}" th:text="${form}"></option>
+            </select>
+            <label for="material" class="col-lg-2 col-form-label">Материал: </label>
+            <select id="material" name="material">
+                <option th:each="material : ${materials}" th:value="${material}" th:text="${material}"></option>
+            </select>
+            <br>
+            <br>
+            <div class="form-group row">
+                <label for="diameter" class="col-sm-3 col-form-label">Введите диаметр материала: </label>
+                <input id="diameter" type="text" name="diameter"  placeholder="Введите диаметр" class="col-sm-7"
+                       th:field="*{diameter}">
+            </div>
+            <div class="form-group row">
+                <label for="length" class="col-sm-3 col-form-label">Введите длину материала: </label>
+                <input id="length" type="text" name="length"  placeholder="Введите длину" class="col-sm-7"
+                       th:field="*{length}">
+            </div>
+            <div class="form-group row">
+                <label for="height" class="col-sm-3 col-form-label">Введите высоту материала: </label>
+                <input id="height" type="text" name="height"  placeholder="Введите высоту" class="col-sm-7"
+                       th:field="*{height}">
+            </div>
+            <div class="form-group row">
+                <label for="width" class="col-sm-3 col-form-label">Введите ширину материала: </label>
+                <input id="width" type="text" name="width"  placeholder="Введите ширину" class="col-sm-7"
+                       th:field="*{width}">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Добавить</button>
+            </div>
+        </form>
+
+    </div>
+
+    <br>
+
+    <h5>Материал на складе</h5>
+    <br>
+    <form th:action="@{/stuff}" method="get">
+        <label for="filter_form" class="col-lg-2 col-form-label">Форма: </label>
+        <select id="filter_form" name="filter_form">
+            <option></option>
+            <option th:each="form : ${forms}" th:value="${form}" th:text="${form}"></option>
+        </select>
+        <label for="filter_material" class="col-lg-2 col-form-label">Материал: </label>
+        <select id="filter_material" name="filter_material">
+            <option></option>
+            <option th:each="material : ${materials}" th:value="${material}" th:text="${material}"></option>
+        </select>
+        <button type="submit" class="btn btn-primary ml-3">Отфильтровать</button>
+    </form>
+
+    <div th:if="${#lists.isEmpty(stuffs)}">
+        Список материала пуст
+    </div>
+
+    <table th:if="${not #lists.isEmpty(stuffs)}" class="table table-bordered mt-3">
+
+        <thead>
+        <tr>
+            <th scope="col">Форма</th>
+            <th scope="col">Материал</th>
+            <th scope="col">Диаметр</th>
+            <th scope="col">Длина</th>
+            <th scope="col">Ширина</th>
+            <th scope="col">Высота</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="stuffy : ${stuffs}">
+
+            <td th:text="${stuffy.form}"/>
+
+            <td th:text="${stuffy.material}"/>
+
+            <td th:text="${stuffy.diameter}"/>
+
+            <td th:text="${stuffy.length}"/>
+
+            <td th:text="${stuffy.width}"/>
+
+            <td th:text="${stuffy.height}"/>
+
+        </tr>
+        </tbody>
+
+    </table>
+
+    <br>
+
+</div>
+
+<div th:insert="parts/footer :: footer"></div>
+
+</body>
+</html>

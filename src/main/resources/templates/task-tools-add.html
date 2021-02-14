@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Инструмент</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<header th:insert="parts/header :: header"></header>
+
+<div class="text-center container mt-3">
+
+    <h5>Инструмент для выбора</h5>
+    <br>
+    <form method="get">
+        <label for="filter_specialization" class="col-lg-2 col-form-label">Тип инструмента: </label>
+        <select id="filter_specialization" name="filter_specialization">
+            <option></option>
+            <option th:each="spec : ${specializations}" th:value="${spec}" th:text="${spec}"></option>
+        </select>
+        <button type="submit" class="btn btn-primary ml-3">Отфильтровать</button>
+    </form>
+
+    <table class="table table-bordered mt-3">
+
+        <thead>
+        <tr>
+            <th scope="col">Тип инструмента</th>
+            <th scope="col">Наименование</th>
+            <th scope="col">Диаметр</th>
+            <th scope="col">Длина</th>
+            <th scope="col">Длина режущей части</th>
+            <th scope="col">Кол-во</th>
+            <th scope="col">Действие</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="tool : ${tools}">
+
+            <td th:text="${tool.specialization}"/>
+
+            <td th:text="${tool.title}"/>
+
+            <td th:text="${tool.diameter}"/>
+
+            <td th:text="${tool.length}"/>
+
+            <td th:text="${tool.cuttingLength}"/>
+
+            <td th:text="${tool.count}"/>
+
+            <td>
+                <form th:action="'/task/' + ${task.id} + '/tools/add/' + ${tool.id} + '/add'" method="post">
+                    <button class="btn btn-primary mt-2" type="submit">Добавить</button>
+                </form>
+            </td>
+
+        </tr>
+        </tbody>
+
+    </table>
+
+    <br>
+
+    <a th:href="'/task/' + ${task.id} + '/tools'">Назад</a>
+
+</div>
+
+<div th:insert="parts/footer :: footer"></div>
+
+</body>
+</html>

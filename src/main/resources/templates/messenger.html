@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Чат</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<header th:insert="parts/header :: header"></header>
+<br>
+
+<div class="container">
+
+    <!--    фильтр    -->
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <form th:action="@{/messenger}" method="get" class="form-inline">
+                <input class="form-control" type="text" name="filter" th:value="${filter}" placeholder="Номер заказа">
+                <button class="btn btn-primary ml-2" type="submit">Найти по номеру заказа</button>
+            </form>
+        </div>
+    </div>
+
+    <!--   форма отправки сообщений     -->
+
+    <div class="form-group mt-3">
+        <form th:action="@{/messenger}" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <input type="text" name="text" placeholder="Введите сообщение" class="form-control">
+            </div>
+            <div class="form-group">
+                <input type="text" name="tag" th:value="${tag}" placeholder="Введите номер заказа" class="form-control">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Добавить</button>
+            </div>
+        </form>
+    </div>
+
+    <!--    список всех сообщений    -->
+
+    <div th:if="${#lists.isEmpty(messages)}">
+        Список сообщений пуст
+    </div>
+
+    <div th:each="message : ${messages}" class="card mt-3">
+
+        <div class="card-body m-2">
+            <span th:text="${message.text}"/>
+            <p>
+                <b th:text="'#' + ${message.tag}"/>
+                <i th:text="${message.localDateTime}"/>
+                <b><u th:text="${(message.getAuthor).getUsername}" />,  <i th:each="role : ${(message.getAuthor).getRoles}" th:text="${role}" /></b>
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
+<div th:insert="parts/footer :: footer"></div>
+
+</body>
+</html>

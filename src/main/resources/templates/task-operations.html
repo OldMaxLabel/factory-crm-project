@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Операционная карта</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<header th:insert="parts/header :: header"></header>
+
+<div class="text-center container mt-3">
+
+    <h5>Операционная карта для <b th:text="${task.title}"/> </h5>
+
+    <br>
+
+    <table class="table table-bordered mt-3">
+
+        <thead>
+        <tr>
+            <th scope="col">Операция</th>
+            <th scope="col">Машинное время</th>
+            <th scope="col">Действие</th>
+            <th scope="col">Действие</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="operation : ${(task.operations)}">
+
+            <td th:text="${operation.title}"/>
+
+            <td th:text="${operation.duration}"/>
+
+            <td>
+                <form th:action="'/task/' + ${task.id} + '/operations/' + ${operation.id} + '/edit'" method="get">
+                    <button class="btn btn-warning mt-2" type="submit">Редактировать</button>
+                </form>
+            </td>
+
+            <td>
+                <form th:action="'/task/' + ${task.id} + '/operations/' + ${operation.id} + '/remove'" method="post">
+                    <button class="btn btn-warning mt-2" type="submit">Удалить</button>
+                </form>
+            </td>
+
+        </tr>
+        </tbody>
+
+    </table>
+
+    <br>
+
+    <a th:href="'/task/' + ${task.id} + '/operations/add'" class="btn btn-primary">Добавить</a>
+
+    <br>
+
+    <a th:href="'/task/' + ${task.id}">Назад</a>
+
+</div>
+
+<div th:insert="parts/footer :: footer"></div>
+
+</body>
+</html>
